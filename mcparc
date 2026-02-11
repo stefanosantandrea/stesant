@@ -1,0 +1,50 @@
+## Architettura MCP multi-database
+
+```mermaid
+graph TB
+    subgraph "LAYER 1 - DBA / Client"
+        DBA[DBA<br/>VS Code + Cline]
+        CLIENT[Client MCP]
+    end
+    
+    subgraph "LAYER 2 - AI Orchestration"
+        LLM[LLM Provider<br/>Claude API / Azure OpenAI / Bedrock]
+    end
+    
+    subgraph "LAYER 3 - MCP Servers<br/>Data Access Layer"
+        SQLCL[SQLcl MCP Server<br/>Oracle]
+        MSSQL[SQL Server MCP]
+        PG[PostgreSQL MCP]
+        MYSQL[MySQL MCP]
+    end
+    
+    subgraph "LAYER 4 - Database"
+        ORACLE[Oracle CDB/PDB<br/>Prod/Test/Dev]
+        SQLSERV[SQL Server<br/>Prod/Test]
+        POSTGRES[PostgreSQL<br/>Prod/Test]
+        MYDB[MySQL<br/>Prod/Test]
+    end
+    
+    subgraph "LAYER 5 - Governance"
+        SIEM[SIEM / Audit]
+        SECRETS[Secret Manager]
+    end
+    
+    DBA --> CLIENT
+    CLIENT --> LLM
+    CLIENT -.-> SQLCL
+    CLIENT -.-> MSSQL
+    CLIENT -.-> PG
+    CLIENT -.-> MYSQL
+    SQLCL --> ORACLE
+    MSSQL --> SQLSERV
+    PG --> POSTGRES
+    MYSQL --> MYDB
+    SQLCL -.-> SECRETS
+    MSSQL -.-> SECRETS
+    PG -.-> SECRETS
+    SQLCL -.-> SIEM
+    MSSQL -.-> SIEM
+    PG -.-> SIEM
+```
+Add MCP architecture diagram
